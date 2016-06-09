@@ -1,0 +1,69 @@
+.digit > .right {
+    display: inline-block;
+}
+
+.digit > .center, .digit > .left{
+    float: left;
+}
+
+.digit > .left > div, .digit > .right > div{
+    margin-top: 10px;
+    background-image: url("matchv.png");
+    height: 200px;
+    width: 20px;
+    background-repeat: no-repeat;
+}
+
+.digit > .center > div {
+    background-image: url("matchh.png");
+    height: 20px;
+    width: 200px;
+}
+
+.digit > .center > .center, .digit > .center > .bottom{
+    margin-top: 94%;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.etalon{
+    display: none;
+}
+
+.digit, .sign, .equals{
+    float: left;
+    margin: 20px;
+}
+
+.sign .horizontal{
+    background-image: url("matchh.png");
+    height: 20px;
+    width: 200px;
+    margin-top: 205px;
+}
+
+.sign .vertical{
+    background-image: url("matchv.png");
+    height: 200px;
+    width: 20px;
+    margin-top: -110px;
+    margin-left: 100px;
+}
+
+.sign.minus .vertical{
+    visibility: hidden;
+}
+
+.equals div{
+    background-image: url("matchh.png");
+    height: 20px;
+    width: 200px;
+    margin-top: 135px;
+}
+
+.droparea:hover{
+    visibility: visible;
+    opacity: 0.5;
+}
