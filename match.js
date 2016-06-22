@@ -60,8 +60,7 @@ function digit(d){
         digit.removeClass('etalon');
         var keys = Object.keys(displayMapping[d.charAt(counter)]);
         $.each(keys, function(index, column){
-            $.each(displayMapping[d.charAt(counter)][column], function(i, match){
-                digit.find('.'+column).find('.'+match).removeClass('invisible');
+            $.each(displayMapping[d.charAt(counter)][column], function(i, match){ digit.find('.'+column).find('.'+match).toggleClass('match invisible');
             });
         });
         digit.attr('matches', byteMapping[d]);
@@ -74,8 +73,8 @@ function digit(d){
 function sign(sign){
     var res = $('.sign.etalon').clone();
     res.removeClass('etalon');
-    if(sign)res.addClass('plus');
-    else res.addClass('minus');
+    if(sign)res.find('.vertical').addClass('match');
+    else res.find('.vertical').addClass('invisible');
     return res;
 }
 
@@ -126,18 +125,24 @@ $( window ).load(function(){
         $('.droparea').removeClass('droparea');
     });
     body.append(digit(equation[0])).append(sign(equation[1])).append(digit(equation[2])).append(equalsSign()).append(digit(equation[3]));
-//    for(var i=0;i<10;i++)body.append(digit(i));
-    $('.left > div, .center > div, .right > div').on('mousedown', function(){
-        draggingMatch = $(this);
-        draggingMatch.addClass("invisible");
-        $('.invisible').addClass('droparea');
-        $('.droparea').mouseup(function(e){
-            e.preventDefault();
-            $(this).removeClass('invisible');
-            $(this).closest('.digit').attr('matches', draggingMatch.closest('.digit').attr('matches') &(1<<draggingMatch.attr('position')));
-            draggingMatch.closest('.digit').attr('matches', draggingMatch.closest('.digit').attr('matches') &~(1<<draggingMatch.attr('position')));
-            draggingMatch = null;
-            $('droparea').removeClass('droparea');
-        });
+    $('.match').draggable({
+        revert: "invalid"
     });
+    $('.invisible').droppable({
+        accept: ".match"        
+    });
+//    for(var i=0;i<10;i++)body.append(digit(i));
+//    $('.left > div, .center > div, .right > div').on('mousedown', function(){
+//        draggingMatch = $(this);
+//        draggingMatch.addClass("invisible");
+//        $('.invisible').addClass('droparea');
+//        $('.droparea').mouseup(function(e){
+//            e.preventDefault();
+//            $(this).removeClass('invisible');
+//            $(this).closest('.digit').attr('matches', draggingMatch.closest('.digit').attr('matches') &(1<<draggingMatch.attr('position')));
+//            draggingMatch.closest('.digit').attr('matches', draggingMatch.closest('.digit').attr('matches') &~(1<<draggingMatch.attr('position')));
+//            draggingMatch = null;
+//            $('droparea').removeClass('droparea');
+//        });
+//    });
 });
