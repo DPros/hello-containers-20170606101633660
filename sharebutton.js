@@ -6,7 +6,7 @@
 	<meta property="og:type"          content="website" />
 	<meta property="og:title"         content="Website Title" />
 	<meta property="og:description"   content="button for content share" />
-	<meta property="og:image"         content="http://www.your-domain.com/path/image.jpg" />
+	<meta property="og:image"         content="sharebutton.jpg" />
 </head>
 <body>
 
