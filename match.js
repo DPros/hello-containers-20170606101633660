@@ -141,3 +141,286 @@ $( window ).load(function(){
         });
     });
 });
+
+
+
+/*
+
+Digit object
+
+*/
+
+var Digit = {
+  digit: 0,
+   repersentation: function(){
+       var result;
+       
+       switch(this.digit){
+           case 0:
+               result = [1,1,1,0,1,1,1];
+               break;
+           case 1:
+               result = [0,1,0,0,1,0,0];
+               break;
+            case 2:
+               result = [1,0,1,1,1,0,1];
+               break;
+           case 3:
+               result = [1,1,0,1,1,0,1];
+               break;
+           case 4: 
+               result = [0,1,0,1,1,1,0];
+               break;
+           case 5:
+               result = [1,1,0,1,0,1,1];
+               break;
+           case 6:
+               result = [1,1,1,1,0,1,1];
+               break;
+           case 7:
+               result = [0,1,0,0,1,0,1];
+               break;
+           case 8:
+               result = [1,1,1,1,1,1,1];
+               break;
+           case 9:
+               result = [1,1,0,1,1,1,1];
+               break;
+           default:
+               result = [0,0,0,0,0,0,0];
+               break;      
+       }
+       
+       return result;
+   },
+    set:function(d){
+        this.digit = d;
+    }
+    
+};
+
+function Digit(n){
+   this.digit = parseInt(n); 
+}
+
+/*
+
+Number object
+
+
+*/
+
+var Number{
+    value:0,
+    digits:[],
+     getDigits: function(n){
+         //todo
+     },
+    update:function(){
+        
+    }     
+}
+
+function Number(n){
+    this.value = n;
+    this.digits = getDigits(n);
+}
+
+/*
+
+Sign object
+
+*/
+
+var Sign={
+    sign:'-',
+    compute:function(a,b){
+        return a-b;
+    }
+}
+
+function Sign(sign,compute){
+    this.sign = sign;
+    this.compute = compute;
+}
+
+var plus = new Sign("+",function(a,b){return a+b;});
+var minus = new Sign("-",function(a,b){return a-b;})
+
+
+/*
+
+Variant object
+
+*/
+
+
+var Variant = {
+    numbers:[],
+    signs:[],
+    result: new Number(0)
+};
+
+
+
+function Variant(numbers,dim,steps){
+    var res = 0;
+
+    
+    for(var i = 0; i < numbers, i++){ 
+        numbers.push(new Number( Math.floor(Math.random()*Math.pow(10,dim)))); 
+    }
+    
+    for(var i = 0; i < numbers-1, i++){
+        signs.push((Math.floor(Math.random()*10)%2==1?plus,minus);
+    }
+    
+    this.result = new Number(getResult);               
+     
+    shuffle(steps); 
+                   
+    function getResult(){
+            var res = numbers[0].value;
+            
+            for(var i = 1; i < numbers, i++)
+                res = signs[i-1].compute(res,numbers[i].value);
+            return res;
+        }               
+                   
+        
+    function shuffle(n){
+        for(var i = 0; i < n; i++){
+//            var n1 = numbers[Math.floor(Math.random()*10)%numbers];
+//            var d1 = n1.digits[Math.floor(Math.random()*10)%n1.digits.length];
+//            var n2 = numbers[Math.floor(Math.random()*10)%numbers];
+//            var d2 = n2.digits[Math.floor(Math.random()*10)%n2.digits.length];
+            
+            if(Math.floor(Math.random()*10)%2){
+                //digits
+                    var n1 = numbers[Math.floor(Math.random()*10)%numbers];
+                    var d1 = n1.digits[Math.floor(Math.random()*10)%n1.digits.length];
+                    var actions = getDigitActions(d);
+                    var action = actions[Math.floor(Math.random()*10)%actions.length];
+                    
+                    
+                    if(action.turn != undefined){
+                        d1.set(action.turn);
+                        
+                    }else if(action.shift != undefined){
+                        d1.set(action.shift);
+                        
+                    }else if(action.add != undefined){
+                    
+                    }
+                    
+                    
+                    n1.update;
+            }else{
+                //signs
+                
+            }
+            
+        }
+        
+        
+    }
+                    
+   
+                    
+    function findDigit(d){
+                    
+    }                
+    
+    function getDigitActions(digit){
+        var res = [];
+                    
+        switch(digit.digit){
+            case 0:
+                res = [{add:8}, {shift:6},{shift:9}];    
+                break;
+            case 1: 
+                res = [{add:7}];
+                break;
+            case 2:
+                res = [{turn:5},{shift:3}];
+                break;    
+            case 3:     
+                res = [{shift:2},{shift:3}];
+                break;    
+            case 4:  
+                res = [{no:4}];
+                break;    
+            case 5:
+                res = [{turn:2},{shift:3}];
+                break;
+            case 6:
+                res = [{add:8},{turn:9},{shift:0}];  
+                break;
+            case 7:    
+                res = [{remove:1}];  
+                break;
+            case 8: 
+                res =  [{remove:0},{remove:6},{remove:9}];
+                break;
+            case 9: 
+                res = [{add:8},{turn:6},{shift:0}];    
+        }            
+         return res;           
+    }
+                    
+    function getDigitbyAction(action){
+        if(action === 'add')           
+    }                
+                    
+                    
+    function getSignActions(sign){
+        if (sign.sign === '-') return {add:plus};
+        else return {remove:minus};
+    }                
+}
+
+
+                    
+/*
+
+Game object
+
+*/
+
+var Game={
+    variants:[],
+    totalVariants:0
+};
+
+
+/*
+
+var game = [
+    {levels:20,numbers:3,dim:2,steps:3}
+    {levels:15,numbers:3,dim:3,steps:5}
+    {levels:15,numbers:4,dim:3,steps:8}
+    {levels:10,numbers:4,dim:4,steps:12}
+    ];
+
+
+
+*/
+function Game(game){
+    
+    for(var i = 0; i < game.length; i++){
+        
+        this.variants.push([]);
+        
+        for(var j = 0; j < game[i].levels; j++){
+            this.variants[i].push(new Variant(game[i].numbers,game[i].dim,game[i].steps));
+            this.totalVariants++;
+        }
+            
+    }
+}
+
+
+
+
+
+
