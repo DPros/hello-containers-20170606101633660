@@ -8,16 +8,22 @@
 
 .digit > .left > div, .digit > .right > div{
     margin-top: 10px;
-    background-image: url("matchv.png");
-    height: 200px;
-    width: 20px;
+    height: 100px;
+    width: 10px;
     background-repeat: no-repeat;
 }
 
 .digit > .center > div {
-    background-image: url("matchh.png");
-    height: 20px;
-    width: 200px;
+    height: 10px;
+    width: 100px;
+}
+
+.digit > .center img{
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+    margin-top: -40px;
+    margin-left: 45px;
 }
 
 .digit > .center > .center, .digit > .center > .bottom{
@@ -38,32 +44,60 @@
 }
 
 .sign .horizontal{
-    background-image: url("matchh.png");
-    height: 20px;
-    width: 200px;
-    margin-top: 205px;
+    height: 10px;
+    width: 100px;
+    margin-top: 110px;
 }
 
 .sign .vertical{
-    background-image: url("matchv.png");
-    height: 200px;
-    width: 20px;
-    margin-top: -110px;
-    margin-left: 100px;
+    height: 100px;
+    width: 10px;
+    margin-top: -55px;
+    margin-left: 50px;
 }
 
-.sign.minus .vertical{
-    visibility: hidden;
+.equals img{
+    height: 10px;
+    width: 100px;
+    margin-top: 70px;
+    display: block;
 }
 
-.equals div{
-    background-image: url("matchh.png");
-    height: 20px;
-    width: 200px;
-    margin-top: 135px;
+.highlighted{
+    background: aqua;
 }
 
-.droparea:hover{
-    visibility: visible;
-    opacity: 0.5;
+.digit img, .sign img {
+    width: 10px;
+    height: 100px;
+}
+
+#header{
+    width: 100%;
+    background: green;
+    padding: 10px;
+}
+
+.equals{
+    height: 220px;
+}
+
+.moves{
+    float: right;
+}
+
+.background-chooser{
+    position: absolute;
+    text-align: center;
+    margin-top: -23px;
+    width: 100%;
+}
+
+body{
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#content img{
+    background: white;
 }

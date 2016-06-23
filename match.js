@@ -1,5 +1,15 @@
-var draggingMatch;
-
+var droppableOptions = {
+    tolerance: "pointer",
+    accept: ".match img",
+    activeClass: "highlighted",
+    drop: function(event, ui){
+        drop(event, ui, $(this));
+    }
+};
+var draggableOptions = {
+    revert: "invalid"
+}
+    
 var byteMapping = [119, 3, 62, 31, 75, 93, 125, 19, 127, 95];
     
 var displayMapping = [
@@ -51,6 +61,74 @@ var displayMapping = [
     }
 ];
 
+function getBackground(keyword){
+ $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
+        {
+            tags: keyword,
+            tagmode: "any",
+            format: "json"
+        },
+        function(data) {
+            var rnd = Math.floor(Math.random() * data.items.length);
+
+            var image_src = data.items[rnd]['media']['m'].replace("_m", "_b");
+
+            $('body').css('background-image', "url('" + image_src + "')");
+
+        });
+}
+
+function startDrag(source){
+}
+
+function stopDrag(match){
+    $('.ui-droppable').removeClass('highlighted');
+}
+
+function drop(event, match, droparea){
+    var parent = $(match.draggable.context.parentNode);
+    parent.toggleClass('match droparea').droppable(droppableOptions).empty();
+match.draggable.removeAttr('style');
+ droparea.droppable("destroy").toggleClass('match droparea').append(match.draggable);
+    recalculate(parent, droparea);
+}
+
+function recalculate(source, target){
+    var matches = source.closest('.digit').attr('matches');
+    matches &=  ~(1<<source.attr('position'));
+    source.closest('.digit').attr('matches', matches);
+    matches = target.closest('.digit').attr('matches');
+    matches |= (1<<target.attr('position'));
+    target.closest('.digit').attr('matches', matches);
+    var n1=0;
+    var n2=0;
+    var current = 0;
+    var counter = 0;
+    $('#content > div').each(function(){
+        if($(this).hasClass('digit')){
+            if(!byteMapping.indexOf($(this).attr('matches')))return;
+            current=current * 10 + byteMapping.indexOf(parseInt($(this).attr('matches')));
+        }
+        else if($(this).hasClass('sign')){
+            n1 = current;
+            current = 0;
+        }
+        else if($(this).hasClass('equals')){
+            n2 = current;
+            current = 0;
+        }
+    });
+    if('#content .plus'){
+        if(current == n1 + n2)success();
+    }else{
+        if(current == n1 - n2)success();
+    }
+}
+
+function success(){
+    alert("Solved");
+}
+
 function digit(d){
     var res = [];
     d=""+d;
@@ -60,10 +138,12 @@ function digit(d){
         digit.removeClass('etalon');
         var keys = Object.keys(displayMapping[d.charAt(counter)]);
         $.each(keys, function(index, column){
-            $.each(displayMapping[d.charAt(counter)][column], function(i, match){ digit.find('.'+column).find('.'+match).toggleClass('match invisible');
+            $.each(displayMapping[d.charAt(counter)][column], function(i, match){ 
+                digit.find('.'+column).find('.'+match).toggleClass('match droparea');
+                digit.find('.'+column).find('.'+match).append("<img src='matchv.png'/>");
             });
         });
-        digit.attr('matches', byteMapping[d]);
+        digit.attr('matches', byteMapping[parseInt(d.charAt(counter))]);
         res.push(digit);
         ++counter;
     }
@@ -73,8 +153,9 @@ function digit(d){
 function sign(sign){
     var res = $('.sign.etalon').clone();
     res.removeClass('etalon');
-    if(sign)res.find('.vertical').addClass('match');
-    else res.find('.vertical').addClass('invisible');
+    if(sign){
+        res.find('.vertical').append("<img src='matchv.png'/>").toggleClass('droparea match');
+    }
     return res;
 }
 
@@ -115,34 +196,24 @@ function transition(d){
 }
 
 $( window ).load(function(){
+   if(localStorage){
+       if(!localStorage.getItem('background')){
+           localStorage.setItem('background', 'fire')
+       }
+       getBackground(localStorage.getItem('background'));
+   }
     var equation = generate();
-    var body = $('body');
-    body.mouseup(function(){
-        console.log("mouse up");
-        if(draggingMatch){
-            draggingMatch.removeClass('invisible');
-        }
-        $('.droparea').removeClass('droparea');
-    });
-    body.append(digit(equation[0])).append(sign(equation[1])).append(digit(equation[2])).append(equalsSign()).append(digit(equation[3]));
-    $('.match').draggable({
-        revert: "invalid"
-    });
-    $('.invisible').droppable({
-        accept: ".match"        
-    });
+    console.log(equation);
+    var content = $('#content'); 
+    content.append(digit(equation[0])).append(sign(equation[1])).append(digit(equation[2])).append(equalsSign()).append(digit(equation[3]));
+    $('.match img').draggable(draggableOptions);
+    $('.droparea').droppable(droppableOptions);
 //    for(var i=0;i<10;i++)body.append(digit(i));
-//    $('.left > div, .center > div, .right > div').on('mousedown', function(){
-//        draggingMatch = $(this);
-//        draggingMatch.addClass("invisible");
-//        $('.invisible').addClass('droparea');
-//        $('.droparea').mouseup(function(e){
-//            e.preventDefault();
-//            $(this).removeClass('invisible');
-//            $(this).closest('.digit').attr('matches', draggingMatch.closest('.digit').attr('matches') &(1<<draggingMatch.attr('position')));
-//            draggingMatch.closest('.digit').attr('matches', draggingMatch.closest('.digit').attr('matches') &~(1<<draggingMatch.attr('position')));
-//            draggingMatch = null;
-//            $('droparea').removeClass('droparea');
-//        });
-//    });
+    
+    $('.background-chooser button').click(function(){
+        getBackground($('.background-chooser input').val());
+        if(localStorage){
+            localStorage.setItem('background', $('.background-chooser input').val());
+        }
+    });
 });
