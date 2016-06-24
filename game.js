@@ -54,7 +54,7 @@ function Digit(n){
     };
 }
 
-var sd = new Digit(3);
+
 
 /*
 
@@ -67,8 +67,17 @@ Number object
 
 function Number(n){
     this.value = n;
-    this.digits = function(n){};
-    //this.update = function(){}
+    this.digits = function(){
+		
+		var s = ""+n;
+		var res = [];
+		for(var i = 0; i < s.length;i++){
+			res.push(new Digit(parseInt(s[i])));
+		}
+		
+		return res;
+	};
+    
 }
 
 /*
@@ -125,7 +134,7 @@ function Variant(numbers,dim){
     
     var counter = count();
     
-    for(var i = 0; i < numbers-1;i++){
+    for(var i = 0; i < numbers-2;i++){
         
         var v = Math.floor(Math.random()*10)%2==1?plus:minus;
         
@@ -135,7 +144,7 @@ function Variant(numbers,dim){
     }
     
     while(counter>0){
-        var d = new Digit(Math.floor(Math.random()*10);
+        var d = new Digit(Math.floor(Math.random()*10));
         
         if(getAmount(d.digit)<=counter){
             this.digits.push(d);
@@ -204,17 +213,18 @@ function Variant(numbers,dim){
         for(var i = 0; i < numbers; i++){
             var num  = this.numbers[i].digits;
             
+			
             for(var j = 0; j < num.length; j++){
-                res += getAmount(num[i]);
-            }
-            
-            for(var k = 0; k < num.length-1; k++){
-                res += getAmount(num[k]);
+                res += getAmount(num[j]);
             }
             
         }
+		
+		for(var i = 0; i < numbers-2; i++){
+			res += getAmount(this.signs[i].sign);
+		}
         
-       return res. 
+       return res; 
     }
     
     function getAmount(f){
