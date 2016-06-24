@@ -7,16 +7,20 @@
         <script src="jquery-ui.min.js"></script>
         <script src="match.js"></script>
         <script src="game.js">s</script>
+        <script src="seedrandom.js"></script>
+        <script src="bootstrap.min.js"></script>
     </head>
     <body>
         <div id="header">
-            <span class="level">Level</span>
+            <span id="level"></span>
+<!--
             <div class="background-chooser">
                 What kind of backgounds do you want?
                 <input type="text"/>
                 <button>Update</button>
             </div>
-            <span class="moves">moves left</span>
+-->
+            <span class="select-level">Select level</span>
         </div>
         <div id="content">
         
@@ -44,5 +48,41 @@
             <img class='top' src='matchh.png'/>
             <img class="bottom" src='matchh.png'/>
         </div>
+
+        <div id="success" class="modal" role="dialog">
+            <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Congratulations!</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Next level</button>
+      </div>
+    </div>
+
+  </div>          
+        </div>
+        
+        <div id="modal" class="modal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Select level</h4>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
     </body>
 </html>

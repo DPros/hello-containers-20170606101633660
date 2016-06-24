@@ -1,3 +1,5 @@
+var currentLevel;
+
 var droppableOptions = {
     tolerance: "pointer",
     accept: ".match img",
@@ -130,11 +132,12 @@ function recalculate(source, target){
     });
     processEmptyDigits();
     if(mistake)return;
-    console.log(n1 + " " + n2 + " " + current);
     if($('#content .plus').length==1){
+        console.log(n1 + "+" + n2 + "=" + current);
         if(current == n1 + n2)success();
     }else{
         if(current == n1 - n2)success();
+        console.log(n1 + "-" + n2 + "=" + current);
     }
 }
 
@@ -148,7 +151,7 @@ function processEmptyDigits(){
 }
 
 function success(){
-    alert("Solved");
+    $('#success').modal('show');
 }
 
 function digit(d){
@@ -217,8 +220,6 @@ function shuffle(equation, count){
     matches += matchesNeeded(equation[3]);
 //    console.log(matches);
     while(matches>0){
-                console.log(matches);
-                console.log(task);
         switch(matches){
             case 1:
                 task[1] = 1;
@@ -255,7 +256,6 @@ function getPosition(task){
 function randomPositionInEquation(){
     var res = Math.floor(Math.random()*2 + 1);
     if(res==1)res=0;
-    console.log("pos "+res);
     return res;
 }
 
@@ -282,22 +282,27 @@ function transition(d){
     });
 }
 
+$(document).ready(function(){
+    for(var i = 1; i<101;i++){
+        $('#modal .modal-body').append("<div class='"+i+"'>Level "+i+"</div>");
+    }
+    $('#modal').modal('show');
+});
+
 $( window ).load(function(){
+    
+//    localStorage.setItem('background',null);
    if(localStorage){
        if(!localStorage.getItem('background')){
            localStorage.setItem('background', 'fire')
-           Math.seedran
+           Math.seedrandom("match");
        }
 //       getBackground(localStorage.getItem('background'));
    }
-    var level = generate(20);
-    console.log(level);
-    var content = $('#content'); 
+    
 //    var variant = new Variant(4,4);
 //    console.log(variant);
-    content.append(digit(level.task[0])).append(sign(level.task[1])).append(digit(level.task[2])).append(equalsSign()).append(digit(level.task[3]));
-    $('.match img').draggable(draggableOptions);
-    $('.droparea').droppable(droppableOptions);
+    
 //    for(var i=0;i<10;i++)body.append(digit(i));
     
     $('.background-chooser button').click(function(){
@@ -305,5 +310,35 @@ $( window ).load(function(){
         if(localStorage){
             localStorage.setItem('background', $('.background-chooser input').val());
         }
+    });
+    $('#modal .modal-body div').click(function(){
+        currentLevel = parseInt($(this).attr('class'));
+        Math.seedrandom($(this).attr('class')); 
+    var level = generate(10);
+    console.log(level.equation);
+    var content = $('#content');
+        content.empty();
+        content.append(digit(level.task[0])).append(sign(level.task[1])).append(digit(level.task[2])).append(equalsSign()).append(digit(level.task[3]));
+        $('.match img').draggable(draggableOptions);
+    $('.droparea').droppable(droppableOptions);
+        $('#modal').modal('hide');
+        $('#header #level').text($(this).text());
+    });
+    $('#header .select-level').click(function(){
+        $('#modal').modal('show');
+    });
+    
+    $('#success button').click(function(){
+        currentLevel+=1;
+        Math.seedrandom(""+currentLevel); 
+    var level = generate(10);
+    console.log(level.equation);
+    var content = $('#content');
+        content.empty();
+        content.append(digit(level.task[0])).append(sign(level.task[1])).append(digit(level.task[2])).append(equalsSign()).append(digit(level.task[3]));
+        $('.match img').draggable(draggableOptions);
+    $('.droparea').droppable(droppableOptions);
+        $('#modal').modal('hide');
+        $('#header #level').text("Level "+currentLevel);
     });
 });
