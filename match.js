@@ -144,7 +144,7 @@ function processEmptyDigits(){
     });
     if($('.digit:first').attr('matches')!="0")$('#content').prepend($('.digit.etalon').clone().removeClass('etalon'));
     if($('.plus, .minus').next().attr('matches')!="0")$('.plus, .minus').after($('.digit.etalon').clone().removeClass('etalon'));
-    if($('.equals').next().attr('matches')!="0")$('.equals').after($('.digit.etalon').clone().removeClass('etalon'));
+    if($('#content .equals').next().attr('matches')!="0")$('#content .equals').after($('.digit.etalon').clone().removeClass('etalon'));
 }
 
 function success(){
